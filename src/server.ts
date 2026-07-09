@@ -44,7 +44,7 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
-export default {
+const app = {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
@@ -59,3 +59,74 @@ export default {
     }
   },
 };
+
+export default app;
+
+if (
+  typeof process !== "undefined" &&
+  process.argv &&
+  process.argv[1] &&
+  (process.argv[1].endsWith("server.js") || process.argv[1].endsWith("server.mjs"))
+) {
+  import("node:http").then(async (http) => {
+    const { Readable } = await import("node:stream");
+    const PORT = parseInt(process.env.PORT || "3000", 10);
+
+    const server = http.createServer(async (req, res) => {
+      try {
+        const proto =
+          req.headers["x-forwarded-proto"] ||
+          ((req.socket as any).encrypted ? "https" : "http");
+        const host = req.headers.host || `localhost:${PORT}`;
+        const url = `${proto}://${host}${req.url}`;
+
+        const headers = new Headers();
+        for (const [k, v] of Object.entries(req.headers)) {
+          if (v !== undefined) {
+            if (Array.isArray(v)) v.forEach((val) => headers.append(k, val));
+            else headers.set(k, v);
+          }
+        }
+
+        let body = undefined;
+        if (!["GET", "HEAD", "OPTIONS"].includes(req.method || "GET")) {
+          body = Readable.toWeb(req) as any;
+        }
+
+        const request = new Request(url, {
+          method: req.method,
+          headers,
+          body,
+          // @ts-ignore — duplex needed for streaming body
+          duplex: "half",
+        });
+
+        const response = await app.fetch(request, process.env, {});
+
+        res.statusCode = response.status;
+        response.headers.forEach((val, key) => res.setHeader(key, val));
+
+        if (response.body) {
+          const reader = response.body.getReader();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            res.write(value);
+          }
+        }
+        res.end();
+      } catch (err) {
+        console.error("[server] Unhandled error:", err);
+        res.statusCode = 500;
+        res.end("Internal Server Error");
+      }
+    });
+
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`[hanrao] Listening on http://0.0.0.0:${PORT}`);
+    });
+  }).catch((err) => {
+    console.error("Failed to start HTTP server:", err);
+  });
+}
+
