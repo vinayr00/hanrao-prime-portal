@@ -1,11 +1,29 @@
 // Minimal Node.js HTTP wrapper for TanStack Start / Nitro fetch handler on Render.com
 import http from "node:http";
+import fs from "node:fs";
+import path from "node:path";
 import { Readable } from "node:stream";
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
 
 // Load the built fetch-handler exported by TanStack Start / Nitro
 const { default: app } = await import("./dist/server/server.js");
+
+const MIME_TYPES = {
+  ".html": "text/html",
+  ".css": "text/css",
+  ".js": "application/javascript",
+  ".mjs": "application/javascript",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".woff": "font/woff",
+  ".woff2": "font/woff2",
+};
 
 const server = http.createServer(async (req, res) => {
   try {
@@ -15,6 +33,23 @@ const server = http.createServer(async (req, res) => {
       (req.socket?.encrypted ? "https" : "http");
     const host = req.headers.host || `localhost:${PORT}`;
     const url = `${proto}://${host}${req.url}`;
+
+    // Serve static files from dist/client if they exist
+    const urlPath = new URL(url).pathname;
+    const clientDir = path.resolve(process.cwd(), "dist/client");
+    const filePath = path.resolve(clientDir, urlPath.startsWith("/") ? urlPath.slice(1) : urlPath);
+
+    if (filePath.startsWith(clientDir) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = MIME_TYPES[ext] || "application/octet-stream";
+      res.writeHead(200, {
+        "Content-Type": contentType,
+        "Cache-Control": "public, max-age=31536000, immutable",
+      });
+      fs.createReadStream(filePath).pipe(res);
+      return;
+    }
+
 
     const headers = new Headers();
     for (const [k, v] of Object.entries(req.headers)) {
