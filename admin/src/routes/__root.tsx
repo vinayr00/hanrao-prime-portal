@@ -24,7 +24,7 @@ function NotFoundComponent() {
         </p>
         <div className="mt-6">
           <Link
-            to="/admin/dashboard"
+            to="/dashboard"
             className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Return home

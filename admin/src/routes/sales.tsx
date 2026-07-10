@@ -5,7 +5,7 @@ import { TrendingUp, IndianRupee, BookOpen, MapPinned, Users, MessageSquare, Loa
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/admin/sales")({
+export const Route = createFileRoute("/sales")({
   ssr: false,
   head: () => ({ meta: [{ title: "Sales · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Sales Overview"><Sales /></AdminShell>,

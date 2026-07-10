@@ -5,7 +5,7 @@ import { FileText, FileSpreadsheet, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
-export const Route = createFileRoute("/admin/reports")({
+export const Route = createFileRoute("/reports")({
   ssr: false,
   head: () => ({ meta: [{ title: "Reports · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Reports"><Reports /></AdminShell>,

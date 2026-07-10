@@ -10,16 +10,16 @@ import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { adminDb } from "@/lib/adminDb";
 
 const NAV = [
-  { to: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/projects", label: "Projects", icon: Building2 },
-  { to: "/admin/plots", label: "Plot Management", icon: MapPinned },
-  { to: "/admin/customers", label: "Customers", icon: Users },
-  { to: "/admin/enquiries", label: "Enquiries", icon: MessageSquare },
-  { to: "/admin/notifications", label: "Site Visits", icon: CalendarCheck },
-  { to: "/admin/bookings", label: "Bookings", icon: BookOpen },
-  { to: "/admin/sales", label: "Sales", icon: TrendingUp },
-  { to: "/admin/reports", label: "Reports", icon: BarChart3 },
-  { to: "/admin/settings", label: "Settings", icon: Settings },
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/projects", label: "Projects", icon: Building2 },
+  { to: "/plots", label: "Plot Management", icon: MapPinned },
+  { to: "/customers", label: "Customers", icon: Users },
+  { to: "/enquiries", label: "Enquiries", icon: MessageSquare },
+  { to: "/notifications", label: "Site Visits", icon: CalendarCheck },
+  { to: "/bookings", label: "Bookings", icon: BookOpen },
+  { to: "/sales", label: "Sales", icon: TrendingUp },
+  { to: "/reports", label: "Reports", icon: BarChart3 },
+  { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
 export function AdminShell({ title, children }: { title: string; children: ReactNode }) {
@@ -32,7 +32,7 @@ export function AdminShell({ title, children }: { title: string; children: React
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !user) {
-      navigate({ to: "/admin/login", replace: true });
+      navigate({ to: "/login", replace: true });
     }
   }, [user, loading, navigate]);
 
@@ -53,7 +53,7 @@ export function AdminShell({ title, children }: { title: string; children: React
   const handleSignOut = async () => {
     await signOut();
     toast.success("Signed out");
-    navigate({ to: "/admin/login", replace: true });
+    navigate({ to: "/login", replace: true });
   };
 
   if (loading) {
@@ -83,7 +83,7 @@ export function AdminShell({ title, children }: { title: string; children: React
         }`}
       >
         <div className="flex items-center justify-between px-5 py-5 border-b border-border">
-          <Link to="/admin/dashboard" className="font-serif text-xl font-semibold text-primary">
+          <Link to="/dashboard" className="font-serif text-xl font-semibold text-primary">
             HanRao Admin
           </Link>
           <button className="lg:hidden" onClick={() => setOpen(false)} aria-label="Close menu">
@@ -93,7 +93,7 @@ export function AdminShell({ title, children }: { title: string; children: React
         <nav className="mt-2 px-3 overflow-y-auto h-[calc(100vh-140px)]">
           {NAV.map((n) => {
             const active = pathname === n.to || pathname.startsWith(n.to + "/");
-            const isNotifications = n.to === "/admin/notifications";
+            const isNotifications = n.to === "/notifications";
             return (
               <Link
                 key={n.to}
@@ -138,7 +138,7 @@ export function AdminShell({ title, children }: { title: string; children: React
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to="/admin/notifications"
+              to="/notifications"
               className="relative rounded-lg p-2 hover:bg-secondary"
               aria-label="Site Visits"
             >

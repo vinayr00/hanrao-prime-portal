@@ -5,7 +5,7 @@ import { adminDb, type SiteVisit } from "@/lib/adminDb";
 import { toast } from "sonner";
 import { Search, Trash2, CalendarCheck, Loader2, ChevronDown, Check, CheckCircle2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/notifications")({
+export const Route = createFileRoute("/notifications")({
   ssr: false,
   head: () => ({ meta: [{ title: "Site Visits · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Site Visits"><SiteVisitsAll /></AdminShell>,

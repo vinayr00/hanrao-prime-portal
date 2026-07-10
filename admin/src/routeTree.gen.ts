@@ -9,306 +9,306 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminSiteVisitsRouteImport } from './routes/admin.site-visits'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminSalesRouteImport } from './routes/admin.sales'
-import { Route as AdminReportsRouteImport } from './routes/admin.reports'
-import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
-import { Route as AdminPlotsRouteImport } from './routes/admin.plots'
-import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
-import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
-import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
-import { Route as AdminBookingsRouteImport } from './routes/admin.bookings'
+import { Route as SiteVisitsRouteImport } from './routes/site-visits'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SalesRouteImport } from './routes/sales'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as PlotsRouteImport } from './routes/plots'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as EnquiriesRouteImport } from './routes/enquiries'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CustomersRouteImport } from './routes/customers'
+import { Route as BookingsRouteImport } from './routes/bookings'
+import { Route as IndexRouteImport } from './routes/index'
 
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const SiteVisitsRoute = SiteVisitsRouteImport.update({
+  id: '/site-visits',
+  path: '/site-visits',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSiteVisitsRoute = AdminSiteVisitsRouteImport.update({
-  id: '/admin/site-visits',
-  path: '/admin/site-visits',
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/admin/settings',
-  path: '/admin/settings',
+const SalesRoute = SalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSalesRoute = AdminSalesRouteImport.update({
-  id: '/admin/sales',
-  path: '/admin/sales',
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminReportsRoute = AdminReportsRouteImport.update({
-  id: '/admin/reports',
-  path: '/admin/reports',
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminProjectsRoute = AdminProjectsRouteImport.update({
-  id: '/admin/projects',
-  path: '/admin/projects',
+const PlotsRoute = PlotsRouteImport.update({
+  id: '/plots',
+  path: '/plots',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminPlotsRoute = AdminPlotsRouteImport.update({
-  id: '/admin/plots',
-  path: '/admin/plots',
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
-  id: '/admin/notifications',
-  path: '/admin/notifications',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
+const EnquiriesRoute = EnquiriesRouteImport.update({
+  id: '/enquiries',
+  path: '/enquiries',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
-  id: '/admin/enquiries',
-  path: '/admin/enquiries',
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  id: '/admin/dashboard',
-  path: '/admin/dashboard',
+const CustomersRoute = CustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCustomersRoute = AdminCustomersRouteImport.update({
-  id: '/admin/customers',
-  path: '/admin/customers',
+const BookingsRoute = BookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBookingsRoute = AdminBookingsRouteImport.update({
-  id: '/admin/bookings',
-  path: '/admin/bookings',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/admin/bookings': typeof AdminBookingsRoute
-  '/admin/customers': typeof AdminCustomersRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/enquiries': typeof AdminEnquiriesRoute
-  '/admin/login': typeof AdminLoginRoute
-  '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/plots': typeof AdminPlotsRoute
-  '/admin/projects': typeof AdminProjectsRoute
-  '/admin/reports': typeof AdminReportsRoute
-  '/admin/sales': typeof AdminSalesRoute
-  '/admin/settings': typeof AdminSettingsRoute
-  '/admin/site-visits': typeof AdminSiteVisitsRoute
-  '/admin/': typeof AdminIndexRoute
+  '/': typeof IndexRoute
+  '/bookings': typeof BookingsRoute
+  '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
+  '/enquiries': typeof EnquiriesRoute
+  '/login': typeof LoginRoute
+  '/notifications': typeof NotificationsRoute
+  '/plots': typeof PlotsRoute
+  '/projects': typeof ProjectsRoute
+  '/reports': typeof ReportsRoute
+  '/sales': typeof SalesRoute
+  '/settings': typeof SettingsRoute
+  '/site-visits': typeof SiteVisitsRoute
 }
 export interface FileRoutesByTo {
-  '/admin/bookings': typeof AdminBookingsRoute
-  '/admin/customers': typeof AdminCustomersRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/enquiries': typeof AdminEnquiriesRoute
-  '/admin/login': typeof AdminLoginRoute
-  '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/plots': typeof AdminPlotsRoute
-  '/admin/projects': typeof AdminProjectsRoute
-  '/admin/reports': typeof AdminReportsRoute
-  '/admin/sales': typeof AdminSalesRoute
-  '/admin/settings': typeof AdminSettingsRoute
-  '/admin/site-visits': typeof AdminSiteVisitsRoute
-  '/admin': typeof AdminIndexRoute
+  '/': typeof IndexRoute
+  '/bookings': typeof BookingsRoute
+  '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
+  '/enquiries': typeof EnquiriesRoute
+  '/login': typeof LoginRoute
+  '/notifications': typeof NotificationsRoute
+  '/plots': typeof PlotsRoute
+  '/projects': typeof ProjectsRoute
+  '/reports': typeof ReportsRoute
+  '/sales': typeof SalesRoute
+  '/settings': typeof SettingsRoute
+  '/site-visits': typeof SiteVisitsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/admin/bookings': typeof AdminBookingsRoute
-  '/admin/customers': typeof AdminCustomersRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/admin/enquiries': typeof AdminEnquiriesRoute
-  '/admin/login': typeof AdminLoginRoute
-  '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/plots': typeof AdminPlotsRoute
-  '/admin/projects': typeof AdminProjectsRoute
-  '/admin/reports': typeof AdminReportsRoute
-  '/admin/sales': typeof AdminSalesRoute
-  '/admin/settings': typeof AdminSettingsRoute
-  '/admin/site-visits': typeof AdminSiteVisitsRoute
-  '/admin/': typeof AdminIndexRoute
+  '/': typeof IndexRoute
+  '/bookings': typeof BookingsRoute
+  '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
+  '/enquiries': typeof EnquiriesRoute
+  '/login': typeof LoginRoute
+  '/notifications': typeof NotificationsRoute
+  '/plots': typeof PlotsRoute
+  '/projects': typeof ProjectsRoute
+  '/reports': typeof ReportsRoute
+  '/sales': typeof SalesRoute
+  '/settings': typeof SettingsRoute
+  '/site-visits': typeof SiteVisitsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/admin/bookings'
-    | '/admin/customers'
-    | '/admin/dashboard'
-    | '/admin/enquiries'
-    | '/admin/login'
-    | '/admin/notifications'
-    | '/admin/plots'
-    | '/admin/projects'
-    | '/admin/reports'
-    | '/admin/sales'
-    | '/admin/settings'
-    | '/admin/site-visits'
-    | '/admin/'
+    | '/'
+    | '/bookings'
+    | '/customers'
+    | '/dashboard'
+    | '/enquiries'
+    | '/login'
+    | '/notifications'
+    | '/plots'
+    | '/projects'
+    | '/reports'
+    | '/sales'
+    | '/settings'
+    | '/site-visits'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/admin/bookings'
-    | '/admin/customers'
-    | '/admin/dashboard'
-    | '/admin/enquiries'
-    | '/admin/login'
-    | '/admin/notifications'
-    | '/admin/plots'
-    | '/admin/projects'
-    | '/admin/reports'
-    | '/admin/sales'
-    | '/admin/settings'
-    | '/admin/site-visits'
-    | '/admin'
+    | '/'
+    | '/bookings'
+    | '/customers'
+    | '/dashboard'
+    | '/enquiries'
+    | '/login'
+    | '/notifications'
+    | '/plots'
+    | '/projects'
+    | '/reports'
+    | '/sales'
+    | '/settings'
+    | '/site-visits'
   id:
     | '__root__'
-    | '/admin/bookings'
-    | '/admin/customers'
-    | '/admin/dashboard'
-    | '/admin/enquiries'
-    | '/admin/login'
-    | '/admin/notifications'
-    | '/admin/plots'
-    | '/admin/projects'
-    | '/admin/reports'
-    | '/admin/sales'
-    | '/admin/settings'
-    | '/admin/site-visits'
-    | '/admin/'
+    | '/'
+    | '/bookings'
+    | '/customers'
+    | '/dashboard'
+    | '/enquiries'
+    | '/login'
+    | '/notifications'
+    | '/plots'
+    | '/projects'
+    | '/reports'
+    | '/sales'
+    | '/settings'
+    | '/site-visits'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AdminBookingsRoute: typeof AdminBookingsRoute
-  AdminCustomersRoute: typeof AdminCustomersRoute
-  AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminEnquiriesRoute: typeof AdminEnquiriesRoute
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminNotificationsRoute: typeof AdminNotificationsRoute
-  AdminPlotsRoute: typeof AdminPlotsRoute
-  AdminProjectsRoute: typeof AdminProjectsRoute
-  AdminReportsRoute: typeof AdminReportsRoute
-  AdminSalesRoute: typeof AdminSalesRoute
-  AdminSettingsRoute: typeof AdminSettingsRoute
-  AdminSiteVisitsRoute: typeof AdminSiteVisitsRoute
-  AdminIndexRoute: typeof AdminIndexRoute
+  IndexRoute: typeof IndexRoute
+  BookingsRoute: typeof BookingsRoute
+  CustomersRoute: typeof CustomersRoute
+  DashboardRoute: typeof DashboardRoute
+  EnquiriesRoute: typeof EnquiriesRoute
+  LoginRoute: typeof LoginRoute
+  NotificationsRoute: typeof NotificationsRoute
+  PlotsRoute: typeof PlotsRoute
+  ProjectsRoute: typeof ProjectsRoute
+  ReportsRoute: typeof ReportsRoute
+  SalesRoute: typeof SalesRoute
+  SettingsRoute: typeof SettingsRoute
+  SiteVisitsRoute: typeof SiteVisitsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
+    '/site-visits': {
+      id: '/site-visits'
+      path: '/site-visits'
+      fullPath: '/site-visits'
+      preLoaderRoute: typeof SiteVisitsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/site-visits': {
-      id: '/admin/site-visits'
-      path: '/admin/site-visits'
-      fullPath: '/admin/site-visits'
-      preLoaderRoute: typeof AdminSiteVisitsRouteImport
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/settings': {
-      id: '/admin/settings'
-      path: '/admin/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
+    '/sales': {
+      id: '/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof SalesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/sales': {
-      id: '/admin/sales'
-      path: '/admin/sales'
-      fullPath: '/admin/sales'
-      preLoaderRoute: typeof AdminSalesRouteImport
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reports': {
-      id: '/admin/reports'
-      path: '/admin/reports'
-      fullPath: '/admin/reports'
-      preLoaderRoute: typeof AdminReportsRouteImport
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/projects': {
-      id: '/admin/projects'
-      path: '/admin/projects'
-      fullPath: '/admin/projects'
-      preLoaderRoute: typeof AdminProjectsRouteImport
+    '/plots': {
+      id: '/plots'
+      path: '/plots'
+      fullPath: '/plots'
+      preLoaderRoute: typeof PlotsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/plots': {
-      id: '/admin/plots'
-      path: '/admin/plots'
-      fullPath: '/admin/plots'
-      preLoaderRoute: typeof AdminPlotsRouteImport
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/notifications': {
-      id: '/admin/notifications'
-      path: '/admin/notifications'
-      fullPath: '/admin/notifications'
-      preLoaderRoute: typeof AdminNotificationsRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
+    '/enquiries': {
+      id: '/enquiries'
+      path: '/enquiries'
+      fullPath: '/enquiries'
+      preLoaderRoute: typeof EnquiriesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/enquiries': {
-      id: '/admin/enquiries'
-      path: '/admin/enquiries'
-      fullPath: '/admin/enquiries'
-      preLoaderRoute: typeof AdminEnquiriesRouteImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/admin/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
+    '/customers': {
+      id: '/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof CustomersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/customers': {
-      id: '/admin/customers'
-      path: '/admin/customers'
-      fullPath: '/admin/customers'
-      preLoaderRoute: typeof AdminCustomersRouteImport
+    '/bookings': {
+      id: '/bookings'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof BookingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/bookings': {
-      id: '/admin/bookings'
-      path: '/admin/bookings'
-      fullPath: '/admin/bookings'
-      preLoaderRoute: typeof AdminBookingsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  AdminBookingsRoute: AdminBookingsRoute,
-  AdminCustomersRoute: AdminCustomersRoute,
-  AdminDashboardRoute: AdminDashboardRoute,
-  AdminEnquiriesRoute: AdminEnquiriesRoute,
-  AdminLoginRoute: AdminLoginRoute,
-  AdminNotificationsRoute: AdminNotificationsRoute,
-  AdminPlotsRoute: AdminPlotsRoute,
-  AdminProjectsRoute: AdminProjectsRoute,
-  AdminReportsRoute: AdminReportsRoute,
-  AdminSalesRoute: AdminSalesRoute,
-  AdminSettingsRoute: AdminSettingsRoute,
-  AdminSiteVisitsRoute: AdminSiteVisitsRoute,
-  AdminIndexRoute: AdminIndexRoute,
+  IndexRoute: IndexRoute,
+  BookingsRoute: BookingsRoute,
+  CustomersRoute: CustomersRoute,
+  DashboardRoute: DashboardRoute,
+  EnquiriesRoute: EnquiriesRoute,
+  LoginRoute: LoginRoute,
+  NotificationsRoute: NotificationsRoute,
+  PlotsRoute: PlotsRoute,
+  ProjectsRoute: ProjectsRoute,
+  ReportsRoute: ReportsRoute,
+  SalesRoute: SalesRoute,
+  SettingsRoute: SettingsRoute,
+  SiteVisitsRoute: SiteVisitsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { User, Lock, Building2, Save } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
-export const Route = createFileRoute("/admin/settings")({
+export const Route = createFileRoute("/settings")({
   ssr: false,
   head: () => ({ meta: [{ title: "Settings · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Settings"><Settings /></AdminShell>,

@@ -5,7 +5,7 @@ import { adminDb, type Plot, type Project } from "@/lib/adminDb";
 import { toast } from "sonner";
 import { Plus, Search, Pencil, Trash2, X, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/plots")({
+export const Route = createFileRoute("/plots")({
   ssr: false,
   head: () => ({ meta: [{ title: "Plots · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Plot Management"><Plots /></AdminShell>,

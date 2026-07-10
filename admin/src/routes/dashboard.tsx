@@ -7,7 +7,7 @@ import {
   TrendingUp, BookOpen, Users, IndianRupee, Loader2,
 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/dashboard")({
+export const Route = createFileRoute("/dashboard")({
   ssr: false,
   head: () => ({ meta: [{ title: "Dashboard · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => (
@@ -54,12 +54,12 @@ function Dashboard() {
   }
 
   const cards = [
-    { label: "Projects", value: stats.projects, icon: Building2, to: "/admin/projects", color: "text-blue-600 bg-blue-50" },
-    { label: "Total Plots", value: stats.plots, icon: MapPinned, to: "/admin/plots", color: "text-purple-600 bg-purple-50" },
-    { label: "Enquiries", value: stats.enquiries, icon: MessageSquare, to: "/admin/enquiries", color: "text-amber-600 bg-amber-50" },
-    { label: "Site Visits", value: stats.visits, icon: CalendarCheck, to: "/admin/notifications", color: "text-emerald-600 bg-emerald-50" },
-    { label: "Bookings", value: stats.bookings, icon: BookOpen, to: "/admin/bookings", color: "text-rose-600 bg-rose-50" },
-    { label: "Customers", value: (stats as any).customers ?? 0, icon: Users, to: "/admin/customers", color: "text-indigo-600 bg-indigo-50" },
+    { label: "Projects", value: stats.projects, icon: Building2, to: "/projects", color: "text-blue-600 bg-blue-50" },
+    { label: "Total Plots", value: stats.plots, icon: MapPinned, to: "/plots", color: "text-purple-600 bg-purple-50" },
+    { label: "Enquiries", value: stats.enquiries, icon: MessageSquare, to: "/enquiries", color: "text-amber-600 bg-amber-50" },
+    { label: "Site Visits", value: stats.visits, icon: CalendarCheck, to: "/notifications", color: "text-emerald-600 bg-emerald-50" },
+    { label: "Bookings", value: stats.bookings, icon: BookOpen, to: "/bookings", color: "text-rose-600 bg-rose-50" },
+    { label: "Customers", value: (stats as any).customers ?? 0, icon: Users, to: "/customers", color: "text-indigo-600 bg-indigo-50" },
   ];
 
   return (
@@ -113,7 +113,7 @@ function Dashboard() {
         <div className="rounded-2xl bg-card p-5 shadow-soft ring-1 ring-border">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-serif text-lg font-semibold">Recent Enquiries</h2>
-            <Link to="/admin/enquiries" className="text-xs text-primary hover:underline">View all →</Link>
+            <Link to="/enquiries" className="text-xs text-primary hover:underline">View all →</Link>
           </div>
           {enquiries.length === 0 ? (
             <p className="text-sm text-muted-foreground">No enquiries yet.</p>
@@ -138,7 +138,7 @@ function Dashboard() {
         <div className="rounded-2xl bg-card p-5 shadow-soft ring-1 ring-border">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-serif text-lg font-semibold">Upcoming Site Visits</h2>
-            <Link to="/admin/notifications" className="text-xs text-primary hover:underline">View all →</Link>
+            <Link to="/notifications" className="text-xs text-primary hover:underline">View all →</Link>
           </div>
           {visits.length === 0 ? (
             <p className="text-sm text-muted-foreground">No site visits yet.</p>

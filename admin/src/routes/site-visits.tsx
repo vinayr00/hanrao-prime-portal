@@ -6,7 +6,7 @@ import { supabase, isSupabaseUnconfigured } from "@/integrations/supabase/client
 import { toast } from "sonner";
 import { Search, Trash2, ChevronDown, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/site-visits")({
+export const Route = createFileRoute("/site-visits")({
   ssr: false,
   head: () => ({ meta: [{ title: "Site Visits · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Site Visits"><SiteVisits /></AdminShell>,

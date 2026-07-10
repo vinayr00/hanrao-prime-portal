@@ -5,7 +5,7 @@ import { ShieldCheck, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { isSupabaseUnconfigured } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/admin/login")({
+export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
       { title: "Admin Portal — HanRao Realty" },
@@ -30,7 +30,7 @@ function AdminLogin() {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate({ to: "/admin/dashboard", replace: true });
+      navigate({ to: "/dashboard", replace: true });
     }
   }, [user, loading, navigate]);
 
@@ -50,7 +50,7 @@ function AdminLogin() {
     try {
       await signIn(email.trim(), password);
       toast.success("Welcome to HanRao Admin Portal!");
-      navigate({ to: "/admin/dashboard", replace: true });
+      navigate({ to: "/dashboard", replace: true });
     } catch (err: any) {
       toast.error(err.message ?? "Login failed. Check your credentials.");
     } finally {

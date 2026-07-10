@@ -5,7 +5,7 @@ import { adminDb, type Customer } from "@/lib/adminDb";
 import { toast } from "sonner";
 import { Plus, Search, Pencil, Trash2, X, Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/customers")({
+export const Route = createFileRoute("/customers")({
   ssr: false,
   head: () => ({ meta: [{ title: "Customers · Admin" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: () => <AdminShell title="Customers"><Customers /></AdminShell>,
