@@ -45,7 +45,7 @@ export function useAdminAuth(): AuthState {
       setUser({ id: 'admin-id', email: 'admin@gmail.com' });
       return;
     }
-    throw new Error('Invalid credentials. Please use admin@gmail.com / admin123.');
+    throw new Error('Invalid email or password.');
   }, []);
 
   const signOut = useCallback(async () => {
