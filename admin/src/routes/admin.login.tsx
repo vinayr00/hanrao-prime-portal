@@ -186,9 +186,9 @@ function AdminLogin() {
         )}
 
         <div className="mt-4 text-center">
-          <Link to="/" className="text-xs text-muted-foreground hover:underline">
+          <a href="https://hanrao-prime-portal.onrender.com" className="text-xs text-muted-foreground hover:underline">
             ← Back to website
-          </Link>
+          </a>
         </div>
       </div>
     </div>

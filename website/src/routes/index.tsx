@@ -26,7 +26,7 @@ const featuredQuery = {
 };
 
 export const Route = createFileRoute("/")(({
-  loader: ({ context }) => context.queryClient.ensureQueryData(featuredQuery),
+  loader: ({ context }: any) => context.queryClient.ensureQueryData(featuredQuery),
   head: () => ({
     meta: [
       { title: "HanRao Realty — Premium Open Plots in Hyderabad" },

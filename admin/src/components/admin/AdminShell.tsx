@@ -149,9 +149,9 @@ export function AdminShell({ title, children }: { title: string; children: React
                 </span>
               )}
             </Link>
-            <Link to="/" className="text-xs text-muted-foreground hover:underline hidden sm:block">
+            <a href="https://hanrao-prime-portal.onrender.com" className="text-xs text-muted-foreground hover:underline hidden sm:block">
               ← Public Site
-            </Link>
+            </a>
           </div>
         </header>
         <main className="flex-1 px-4 py-6 lg:px-8">{children}</main>
