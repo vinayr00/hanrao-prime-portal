@@ -86,11 +86,9 @@ function AdminLogin() {
           </p>
         </div>
 
-        {devMode && (
-          <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-xs text-amber-800">
-            <strong>Dev Mode:</strong> Supabase not configured — use any email + password (6+ chars).
-          </div>
-        )}
+        <div className="mb-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-xs text-amber-800">
+          <strong>Admin Credentials:</strong> Use admin@gmail.com and admin123.
+        </div>
 
         {mode === "login" ? (
           <form onSubmit={handleLogin} className="space-y-4">

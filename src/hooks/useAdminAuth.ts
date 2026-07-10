@@ -21,59 +21,41 @@ export function useAdminAuth(): AuthState {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isSupabaseUnconfigured()) {
-      const session = db.auth.getSession();
-      setUser(session ? { id: session.user.id, email: session.user.email } : null);
-      setLoading(false);
-      return;
+    try {
+      const sessionRaw = localStorage.getItem('hanrao_admin_session');
+      if (sessionRaw) {
+        const session = JSON.parse(sessionRaw);
+        if (session?.user?.email === 'admin@gmail.com') {
+          setUser({ id: session.user.id, email: session.user.email });
+          setLoading(false);
+          return;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to parse admin session', e);
     }
-
-    // Real Supabase auth
-    supabase.auth.getSession().then(({ data }) => {
-      const u = data.session?.user;
-      setUser(u ? { id: u.id, email: u.email ?? '' } : null);
-      setLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const u = session?.user;
-      setUser(u ? { id: u.id, email: u.email ?? '' } : null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    setUser(null);
+    setLoading(false);
   }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    if (isSupabaseUnconfigured()) {
-      db.auth.login(email, password);
-      const session = db.auth.getSession();
-      setUser(session ? { id: session.user.id, email: session.user.email } : null);
+    if (email.trim() === 'admin@gmail.com' && password === 'admin123') {
+      const session = { user: { id: 'admin-id', email: 'admin@gmail.com' }, access_token: 'token-admin' };
+      localStorage.setItem('hanrao_admin_session', JSON.stringify(session));
+      setUser({ id: 'admin-id', email: 'admin@gmail.com' });
       return;
     }
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw new Error(error.message);
+    throw new Error('Invalid credentials. Please use admin@gmail.com / admin123.');
   }, []);
 
   const signOut = useCallback(async () => {
-    if (isSupabaseUnconfigured()) {
-      db.auth.logout();
-      setUser(null);
-      return;
-    }
-    await supabase.auth.signOut();
+    localStorage.removeItem('hanrao_admin_session');
     setUser(null);
   }, []);
 
   const sendPasswordReset = useCallback(async (email: string) => {
-    if (isSupabaseUnconfigured()) {
-      // In dev mode, just pretend it worked
-      return;
-    }
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/admin/reset-password`,
-    });
-    if (error) throw new Error(error.message);
+    // Static admin account does not support password resets.
+    return;
   }, []);
 
   return { user, loading, signIn, signOut, sendPasswordReset };
