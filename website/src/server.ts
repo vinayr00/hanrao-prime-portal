@@ -66,7 +66,8 @@ if (
   typeof process !== "undefined" &&
   process.argv &&
   process.argv[1] &&
-  (process.argv[1].endsWith("server.js") || process.argv[1].endsWith("server.mjs"))
+  (process.argv[1].endsWith("server.js") || process.argv[1].endsWith("server.mjs")) &&
+  !process.argv[1].endsWith("render-server.mjs")
 ) {
   import("node:http").then(async (http) => {
     const fs = await import("node:fs");
