@@ -5,6 +5,7 @@ import { Suspense, useMemo, useState } from "react";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectGridSkeleton } from "@/components/LoadingSkeleton";
 import { SmartSearchBar } from "@/components/SmartSearchBar";
+import { NewProjectsComingSoon } from "@/components/NewProjectsComingSoon";
 import { listProjects } from "@/lib/realty.functions";
 import { APPROVAL_TYPES } from "@/lib/site";
 
@@ -184,30 +185,36 @@ function ProjectsGrid() {
       )}
 
       {/* Grid */}
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {pageItems.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i} />
-        ))}
-      </div>
+      {pageItems.length > 0 && (
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {pageItems.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} />
+          ))}
+        </div>
+      )}
 
       {filtered.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mt-10 rounded-2xl border border-dashed border-border bg-card p-10 text-center"
-        >
-          <h3 className="font-serif text-2xl font-semibold">No projects match</h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Try a different keyword or remove a filter.
-          </p>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="mt-5 rounded-full border border-border px-5 py-2.5 text-sm font-medium hover:border-primary/40"
-          >
-            Clear all filters
-          </button>
-        </motion.div>
+        <div className="mt-10 max-w-3xl mx-auto">
+          <NewProjectsComingSoon
+            title={data.length === 0 ? "New Projects Adding Soon..." : "No Matching Projects..."}
+            subtitle={
+              data.length === 0
+                ? "Our team is curating brand new HMDA & DTCP approved layouts across prime Hyderabad locations. Stay tuned!"
+                : "Try a different keyword or clear your active filters."
+            }
+          />
+          {hasFilters && (
+            <div className="mt-5 text-center">
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="rounded-full border border-border bg-card px-5 py-2 text-xs font-medium hover:border-primary/40"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+        </div>
       )}
 
       {/* Pagination */}

@@ -17,8 +17,6 @@ const NAV = [
   { to: "/enquiries", label: "Enquiries", icon: MessageSquare },
   { to: "/notifications", label: "Site Visits", icon: CalendarCheck },
   { to: "/bookings", label: "Bookings", icon: BookOpen },
-  { to: "/sales", label: "Sales", icon: TrendingUp },
-  { to: "/reports", label: "Reports", icon: BarChart3 },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 

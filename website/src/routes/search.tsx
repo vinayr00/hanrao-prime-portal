@@ -7,6 +7,7 @@ import { z } from "zod";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SearchResultsSkeleton, FilterSidebarSkeleton } from "@/components/LoadingSkeleton";
 import { SmartSearchBar } from "@/components/SmartSearchBar";
+import { NewProjectsComingSoon } from "@/components/NewProjectsComingSoon";
 import { searchProjects } from "@/lib/realty.functions";
 import { APPROVAL_TYPES, PLOT_TYPES } from "@/lib/site";
 
@@ -363,19 +364,10 @@ function SearchResults({ search }: { search: SearchParams }) {
 
   if (data.length === 0) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="rounded-2xl border border-dashed border-border bg-card p-10 text-center"
-      >
-        <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-muted text-muted-foreground">
-          <SlidersHorizontal className="h-6 w-6" />
-        </div>
-        <h3 className="font-serif text-2xl font-semibold">No plots found</h3>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Try a different keyword or widen your filters.
-        </p>
-      </motion.div>
+      <NewProjectsComingSoon
+        title="New Projects Adding Soon..."
+        subtitle="No plot results matched your current search filters. Try widening your price, location or layout filters, or check back soon for our newest project launches."
+      />
     );
   }
 

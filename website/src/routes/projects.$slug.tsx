@@ -13,6 +13,7 @@ import {
   Share2,
   ShieldCheck,
   ZoomIn,
+  Camera,
 } from "lucide-react";
 import { toast } from "sonner";
 import { getProjectBySlug, submitEnquiry, submitSiteVisit } from "@/lib/realty.functions";
@@ -81,6 +82,9 @@ function ProjectDetailPage() {
     queryFn: () => getProjectBySlug({ data: { slug: project.slug } }),
   });
   const p = (data ?? project) as ProjectWithPlots;
+
+  const [activePlotImages, setActivePlotImages] = useState<string[] | null>(null);
+  const [activePlotIndex, setActivePlotIndex] = useState(0);
 
   const availablePlots = p.plots.filter((x) => x.availability === "available");
   const minPrice = p.plots.length ? Math.min(...p.plots.map((x) => Number(x.price_per_sqyd))) : 0;
@@ -203,12 +207,14 @@ function ProjectDetailPage() {
                     <th className="px-4 py-3 text-left">Facing</th>
                     <th className="px-4 py-3 text-left">Price/sq.yd</th>
                     <th className="px-4 py-3 text-left">Total</th>
+                    <th className="px-4 py-3 text-left">Photos</th>
                     <th className="px-4 py-3 text-left">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border bg-card">
                   {p.plots.map((pl: Plot) => {
                     const total = Number(pl.area_sqyd) * Number(pl.price_per_sqyd);
+                    const plotPhotos = pl.images || [];
                     return (
                       <tr key={pl.id}>
                         <td className="px-4 py-3 font-medium">{pl.plot_number}</td>
@@ -216,6 +222,23 @@ function ProjectDetailPage() {
                         <td className="px-4 py-3">{pl.facing}</td>
                         <td className="px-4 py-3">{formatPricePerSqYd(Number(pl.price_per_sqyd))}</td>
                         <td className="px-4 py-3 font-medium">{formatINR(total)}</td>
+                        <td className="px-4 py-3">
+                          {plotPhotos.length > 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setActivePlotImages(plotPhotos);
+                                setActivePlotIndex(0);
+                              }}
+                              className="inline-flex items-center gap-1.5 rounded-lg bg-primary/5 px-2.5 py-1 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                            >
+                              <Camera className="h-3.5 w-3.5" />
+                              <span>{plotPhotos.length}</span>
+                            </button>
+                          ) : (
+                            <span className="text-muted-foreground/35 text-xs">—</span>
+                          )}
+                        </td>
                         <td className="px-4 py-3">
                           <AvailabilityBadge value={pl.availability} />
                         </td>
@@ -293,6 +316,71 @@ function ProjectDetailPage() {
           </div>
         </aside>
       </div>
+
+      {/* Plot images lightbox */}
+      <AnimatePresence>
+        {activePlotImages && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActivePlotImages(null)}
+            className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          >
+            <button
+              type="button"
+              onClick={() => setActivePlotImages(null)}
+              aria-label="Close plot photos"
+              className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 text-lg transition-colors font-sans"
+            >
+              ✕
+            </button>
+            <div className="relative flex max-h-[80vh] max-w-[90vw] items-center justify-center">
+              <motion.img
+                key={activePlotIndex}
+                src={activePlotImages[activePlotIndex]}
+                alt={`Plot photo ${activePlotIndex + 1}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="max-h-[80vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
+              />
+              
+              {activePlotImages.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActivePlotIndex((idx) => (idx - 1 + activePlotImages.length) % activePlotImages.length);
+                    }}
+                    aria-label="Previous photo"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 text-xl font-sans"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActivePlotIndex((idx) => (idx + 1) % activePlotImages.length);
+                    }}
+                    aria-label="Next photo"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 text-xl font-sans"
+                  >
+                    ›
+                  </button>
+                </>
+              )}
+            </div>
+            
+            <div className="mt-4 text-sm font-medium text-white/80">
+              Photo {activePlotIndex + 1} of {activePlotImages.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

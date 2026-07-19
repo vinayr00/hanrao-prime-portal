@@ -17,6 +17,7 @@ import { Suspense, useState } from "react";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectGridSkeleton } from "@/components/LoadingSkeleton";
 import { SmartSearchBar } from "@/components/SmartSearchBar";
+import { NewProjectsComingSoon } from "@/components/NewProjectsComingSoon";
 import { listFeaturedProjects } from "@/lib/realty.functions";
 import heroImg from "@/assets/hero.jpg";
 
@@ -29,24 +30,41 @@ export const Route = createFileRoute("/")(({
   loader: ({ context }: any) => context.queryClient.ensureQueryData(featuredQuery),
   head: () => ({
     meta: [
-      { title: "HanRao Realty — Premium Open Plots in Hyderabad" },
+      // ── Primary SEO ──────────────────────────────────────────────────────────
+      { title: "Hanrao Prime Portal | Student Learning & Career Platform" },
       {
         name: "description",
         content:
-          "Discover HMDA, DTCP and RERA approved open plots, villa plots and farm land in Hyderabad, Shamshabad, Sangareddy and Kompally. Trusted by 500+ families.",
+          "Hanrao Prime Portal helps students learn, prepare for placements, practice coding, explore aptitude, AI tools, interview preparation and career resources.",
       },
-      { property: "og:title", content: "HanRao Realty — Premium Open Plots" },
+      {
+        name: "keywords",
+        content:
+          "Hanrao, Prime Portal, Placement Portal, Student Portal, Aptitude, Coding, Interview Preparation, AI Learning, Career Guidance",
+      },
+      { name: "author", content: "Hanrao" },
+      { name: "robots", content: "index, follow" },
+      // ── Open Graph ───────────────────────────────────────────────────────────
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Hanrao Prime Portal" },
       {
         property: "og:description",
-        content:
-          "Curated premium plots across Hyderabad with full approvals and premium amenities.",
+        content: "AI powered student learning and placement preparation platform.",
       },
-      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://hanrao.in" },
+      { property: "og:image", content: "https://hanrao.in/og-image.png" },
+      // ── Twitter Card ─────────────────────────────────────────────────────────
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "robots", content: "index, follow" },
+      { name: "twitter:title", content: "Hanrao Prime Portal" },
+      {
+        name: "twitter:description",
+        content: "AI powered placement and learning portal.",
+      },
+      { name: "twitter:image", content: "https://hanrao.in/og-image.png" },
     ],
     links: [
-      { rel: "canonical", href: "/" },
+      // ── Canonical ────────────────────────────────────────────────────────────
+      { rel: "canonical", href: "https://hanrao.in" },
       {
         rel: "preload",
         as: "image",
@@ -54,26 +72,19 @@ export const Route = createFileRoute("/")(({
       },
     ],
     scripts: [
+      // ── WebSite Structured Data (JSON-LD) ────────────────────────────────────
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "RealEstateAgent",
-          name: "HanRao Realty",
-          url: "https://hanraorealty.in",
-          telephone: "+919000000000",
-          email: "sales@hanraorealty.in",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Financial District",
-            addressLocality: "Hyderabad",
-            addressRegion: "Telangana",
-            postalCode: "500032",
-            addressCountry: "IN",
+          "@type": "WebSite",
+          name: "Hanrao Prime Portal",
+          url: "https://hanrao.in",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://hanrao.in/search?q={search_term_string}",
+            "query-input": "required name=search_term_string",
           },
-          description:
-            "Premium HMDA, DTCP and RERA approved open plots across Hyderabad.",
-          areaServed: ["Hyderabad", "Shamshabad", "Kompally", "Sangareddy"],
         }),
       },
     ],
@@ -251,19 +262,27 @@ function FeaturedProjects() {
         title="Signature Projects"
         subtitle="Handpicked communities where design, location and value converge."
       />
-      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {data.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i} />
-        ))}
-      </div>
-      <div className="mt-10 text-center">
-        <Link
-          to="/projects"
-          className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
-        >
-          View all projects
-        </Link>
-      </div>
+      {data.length === 0 ? (
+        <div className="mt-10 max-w-3xl mx-auto">
+          <NewProjectsComingSoon />
+        </div>
+      ) : (
+        <>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {data.map((p, i) => (
+              <ProjectCard key={p.id} project={p} index={i} />
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
+            >
+              View all projects
+            </Link>
+          </div>
+        </>
+      )}
     </section>
   );
 }
@@ -361,7 +380,7 @@ function Reviews() {
     {
       name: "Anil Reddy",
       city: "Shankarpally",
-      text: "Our Royal Meadows villa plot is exactly what was shown on the layout. Refreshing to work with builders you can trust.",
+      text: "Our villa plot is exactly what was shown on the layout. Refreshing to work with builders you can trust.",
     },
   ];
   return (

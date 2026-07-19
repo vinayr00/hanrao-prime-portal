@@ -34,6 +34,7 @@ export type Plot = {
   facing: string;
   plot_type: 'open' | 'villa' | 'commercial' | 'farm';
   availability: 'available' | 'reserved' | 'sold';
+  images?: string[];
   created_at: string;
 };
 
@@ -98,20 +99,9 @@ export type Notification = {
   created_at: string;
 };
 
-const DEFAULT_PROJECTS: Project[] = [
-  { id: 'p1', slug: 'hanrao-heights', name: 'HanRao Heights', description: 'Premium plotted development near Shamshabad with HMDA approval.', district: 'Rangareddy', city: 'Shamshabad', state: 'Telangana', status: 'active', featured: true, thumbnail_url: '', approval_types: ['HMDA', 'RERA'], amenities: ['Park', 'Clubhouse', 'Security', 'Water Supply'], created_at: '2024-01-15T10:00:00Z' },
-  { id: 'p2', slug: 'green-valley-kompally', name: 'Green Valley Kompally', description: 'Gated community plots with world-class amenities.', district: 'Medchal', city: 'Kompally', state: 'Telangana', status: 'active', featured: true, thumbnail_url: '', approval_types: ['DTCP', 'RERA'], amenities: ['Swimming Pool', 'Gym', 'Park', 'Security'], created_at: '2024-02-10T10:00:00Z' },
-  { id: 'p3', slug: 'royal-meadows-sangareddy', name: 'Royal Meadows Sangareddy', description: 'Farm land and open plots near Sangareddy highway.', district: 'Sangareddy', city: 'Sangareddy', state: 'Telangana', status: 'upcoming', featured: false, thumbnail_url: '', approval_types: ['DTCP'], amenities: ['Bore Well', 'Electric Connection', 'Road Access'], created_at: '2024-03-05T10:00:00Z' },
-];
+const DEFAULT_PROJECTS: Project[] = [];
 
-const DEFAULT_PLOTS: Plot[] = [
-  { id: 'pl1', project_id: 'p1', project_name: 'HanRao Heights', plot_number: 'A-01', area_sqyd: 200, price_per_sqyd: 18000, facing: 'East', plot_type: 'open', availability: 'available', created_at: '2024-01-20T10:00:00Z' },
-  { id: 'pl2', project_id: 'p1', project_name: 'HanRao Heights', plot_number: 'A-02', area_sqyd: 250, price_per_sqyd: 18000, facing: 'North', plot_type: 'open', availability: 'reserved', created_at: '2024-01-20T10:00:00Z' },
-  { id: 'pl3', project_id: 'p1', project_name: 'HanRao Heights', plot_number: 'B-01', area_sqyd: 300, price_per_sqyd: 17500, facing: 'West', plot_type: 'open', availability: 'sold', created_at: '2024-01-20T10:00:00Z' },
-  { id: 'pl4', project_id: 'p2', project_name: 'Green Valley Kompally', plot_number: 'C-10', area_sqyd: 180, price_per_sqyd: 22000, facing: 'East', plot_type: 'villa', availability: 'available', created_at: '2024-02-15T10:00:00Z' },
-  { id: 'pl5', project_id: 'p2', project_name: 'Green Valley Kompally', plot_number: 'C-11', area_sqyd: 200, price_per_sqyd: 22000, facing: 'South', plot_type: 'villa', availability: 'available', created_at: '2024-02-15T10:00:00Z' },
-  { id: 'pl6', project_id: 'p3', project_name: 'Royal Meadows Sangareddy', plot_number: 'F-01', area_sqyd: 500, price_per_sqyd: 8000, facing: 'North', plot_type: 'farm', availability: 'available', created_at: '2024-03-10T10:00:00Z' },
-];
+const DEFAULT_PLOTS: Plot[] = [];
 
 function load<T>(key: string, defaults: T[] = []): T[] {
   try {

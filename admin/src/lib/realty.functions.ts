@@ -49,9 +49,13 @@ export const getProjectBySlug = createServerFn({ method: "GET" })
       .collection("projects")
       .findOne({ slug: data.slug }, { projection: { _id: 0 } });
     if (!project) return null;
+    const proj = project as any;
     const plots = await db
       .collection("plots")
-      .find({ project_id: (project as any).id }, { projection: { _id: 0 } })
+      .find(
+        { $or: [{ project_id: proj.id }, { project_name: proj.name }] },
+        { projection: { _id: 0 } },
+      )
       .sort({ plot_number: 1 })
       .toArray();
     return {

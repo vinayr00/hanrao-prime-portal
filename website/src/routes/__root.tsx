@@ -81,26 +81,64 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "HanRao Realty — Premium Open Plots in Hyderabad" },
+      // ── Primary SEO ──────────────────────────────────────────────────────────
+      { title: "Hanrao Prime Portal | Student Learning & Career Platform" },
       {
         name: "description",
         content:
-          "HanRao Realty offers HMDA, DTCP and RERA approved open plots, villa plots and farm land across Hyderabad, Shamshabad, Sangareddy and Kompally.",
+          "Hanrao Prime Portal helps students learn, prepare for placements, practice coding, explore aptitude, AI tools, interview preparation and career resources.",
       },
-      { name: "author", content: "HanRao Realty" },
-      { property: "og:title", content: "HanRao Realty — Premium Open Plots in Hyderabad" },
+      {
+        name: "keywords",
+        content:
+          "Hanrao, Prime Portal, Placement Portal, Student Portal, Aptitude, Coding, Interview Preparation, AI Learning, Career Guidance",
+      },
+      { name: "author", content: "Hanrao" },
+      { name: "robots", content: "index, follow" },
+      // ── Open Graph ───────────────────────────────────────────────────────────
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Hanrao Prime Portal" },
       {
         property: "og:description",
-        content:
-          "Curated HMDA, DTCP and RERA approved plots across Hyderabad, Shamshabad, Sangareddy and Kompally.",
+        content: "AI powered student learning and placement preparation platform.",
       },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "HanRao Realty" },
+      { property: "og:url", content: "https://hanrao.in" },
+      { property: "og:image", content: "https://hanrao.in/og-image.png" },
+      // ── Twitter Card ─────────────────────────────────────────────────────────
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Hanrao Prime Portal" },
+      {
+        name: "twitter:description",
+        content: "AI powered placement and learning portal.",
+      },
+      { name: "twitter:image", content: "https://hanrao.in/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      // ── Icons & Manifest ─────────────────────────────────────────────────────
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/manifest.json" },
+      // ── Canonical ────────────────────────────────────────────────────────────
+      { rel: "canonical", href: "https://hanrao.in" },
+    ],
+    scripts: [
+      // ── WebSite Structured Data (JSON-LD) ────────────────────────────────────
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Hanrao Prime Portal",
+          url: "https://hanrao.in",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://hanrao.in/search?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,

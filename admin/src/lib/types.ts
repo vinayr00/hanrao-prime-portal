@@ -37,6 +37,7 @@ export type Plot = {
   availability: "available" | "reserved" | "sold";
   latitude: number | null;
   longitude: number | null;
+  images?: string[];
 };
 
 export type Location = {

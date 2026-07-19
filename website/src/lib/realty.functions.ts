@@ -8,23 +8,31 @@ import { db as mockDb } from "./mockDb";
 const mockToPublic = (p: ReturnType<typeof mockDb.projects.list>[number]): Project =>
   ({ ...p, village: '', gallery_urls: [], brochure_url: '', rera_number: '', location_link: '' } as unknown as Project);
 
+const sanitizeProject = (p: Project): Project => {
+  let cleanSlug = (p.slug || '').trim();
+  if (!cleanSlug || cleanSlug.startsWith('http://') || cleanSlug.startsWith('https://')) {
+    cleanSlug = (p.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  return { ...p, slug: cleanSlug };
+};
+
 // ---------------------------------------------------------------------------
 // Public server functions — reads from MongoDB (same DB as admin panel)
 // ---------------------------------------------------------------------------
 
 export const listProjects = createServerFn({ method: "GET" }).handler(async () => {
-  if (!isMongoConfigured()) return mockDb.projects.list().map(mockToPublic);
+  if (!isMongoConfigured()) return mockDb.projects.list().map(mockToPublic).map(sanitizeProject);
   const db = await getDb();
   const docs = await db
     .collection("projects")
     .find({}, { projection: { _id: 0 } })
     .sort({ featured: -1, created_at: -1 })
     .toArray();
-  return docs as unknown as Project[];
+  return (docs as unknown as Project[]).map(sanitizeProject);
 });
 
 export const listFeaturedProjects = createServerFn({ method: "GET" }).handler(async () => {
-  if (!isMongoConfigured()) return mockDb.projects.list().filter(p => p.featured).map(mockToPublic);
+  if (!isMongoConfigured()) return mockDb.projects.list().filter(p => p.featured).map(mockToPublic).map(sanitizeProject);
   const db = await getDb();
   const docs = await db
     .collection("projects")
@@ -32,30 +40,48 @@ export const listFeaturedProjects = createServerFn({ method: "GET" }).handler(as
     .sort({ created_at: -1 })
     .limit(6)
     .toArray();
-  return docs as unknown as Project[];
+  return (docs as unknown as Project[]).map(sanitizeProject);
 });
 
 export const getProjectBySlug = createServerFn({ method: "GET" })
-  .validator((d) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
+  .validator((d) => z.object({ slug: z.string().min(1).max(500) }).parse(d))
   .handler(async ({ data }): Promise<ProjectWithPlots | null> => {
     if (!isMongoConfigured()) {
-      const p = mockDb.projects.list().find(x => x.slug === data.slug);
+      const p = mockDb.projects.list().find(x => x.slug === data.slug || x.id === data.slug);
       if (!p) return null;
       const plots = mockDb.plots.list().filter(x => x.project_id === p.id);
-      return { ...mockToPublic(p), plots: plots as unknown as Plot[] } as ProjectWithPlots;
+      return { ...sanitizeProject(mockToPublic(p)), plots: plots as unknown as Plot[] } as ProjectWithPlots;
     }
     const db = await getDb();
-    const project = await db
+    let project = await db
       .collection("projects")
-      .findOne({ slug: data.slug }, { projection: { _id: 0 } });
+      .findOne(
+        {
+          $or: [
+            { slug: data.slug },
+            { id: data.slug },
+            { name: { $regex: `^${data.slug.replace(/[^a-zA-Z0-9]/g, '.*')}$`, $options: 'i' } }
+          ]
+        },
+        { projection: { _id: 0 } }
+      );
+
+    // Fallback if URL slug is non-matching or malformed
+    if (!project) {
+      project = await db.collection("projects").findOne({}, { projection: { _id: 0 } });
+    }
     if (!project) return null;
+    const proj = project as any;
     const plots = await db
       .collection("plots")
-      .find({ project_id: (project as any).id }, { projection: { _id: 0 } })
+      .find(
+        { $or: [{ project_id: proj.id }, { project_name: proj.name }] },
+        { projection: { _id: 0 } },
+      )
       .sort({ plot_number: 1 })
       .toArray();
     return {
-      ...(project as unknown as Project),
+      ...sanitizeProject(project as unknown as Project),
       plots: plots as unknown as Plot[],
     };
   });
@@ -98,10 +124,14 @@ export const searchProjects = createServerFn({ method: "GET" })
     if (projects.length === 0) return [];
 
     const ids = projects.map((p) => p.id);
+    const names = projects.map((p) => p.name);
 
-    // Build plot filter
+    // Build plot filter — match by project_id (UUID) OR project_name (fallback for legacy data)
     const plotFilter: Record<string, any> = {
-      project_id: { $in: ids },
+      $or: [
+        { project_id: { $in: ids } },
+        { project_name: { $in: names } },
+      ],
       availability: { $ne: "sold" },
     };
     if (data.plotType) plotFilter.plot_type = data.plotType;
@@ -115,11 +145,21 @@ export const searchProjects = createServerFn({ method: "GET" })
       .find(plotFilter, { projection: { _id: 0 } })
       .toArray()) as unknown as Plot[];
 
+    // Build a name→id lookup for fallback matching
+    const nameToId = new Map<string, string>();
+    for (const proj of projects) nameToId.set(proj.name.toLowerCase(), proj.id);
+
     const byProject = new Map<string, Plot[]>();
     for (const p of allPlots) {
-      const arr = byProject.get(p.project_id) ?? [];
+      // Resolve to the correct project id — try UUID first, then match by name
+      let resolvedId = ids.includes(p.project_id) ? p.project_id : undefined;
+      if (!resolvedId && (p as any).project_name) {
+        resolvedId = nameToId.get(((p as any).project_name as string).toLowerCase());
+      }
+      if (!resolvedId) continue; // truly orphaned plot
+      const arr = byProject.get(resolvedId) ?? [];
       arr.push(p);
-      byProject.set(p.project_id, arr);
+      byProject.set(resolvedId, arr);
     }
 
     const enriched = projects
@@ -128,7 +168,7 @@ export const searchProjects = createServerFn({ method: "GET" })
         const availablePlots = pl.filter((p) => p.availability === "available");
         const minPrice = pl.length ? Math.min(...pl.map((p) => Number(p.price_per_sqyd))) : 0;
         const totalArea = pl.reduce((s, p) => s + Number(p.area_sqyd), 0);
-        return { ...proj, _plotCount: pl.length, _availableCount: availablePlots.length, _minPrice: minPrice, _totalArea: totalArea };
+        return { ...sanitizeProject(proj), _plotCount: pl.length, _availableCount: availablePlots.length, _minPrice: minPrice, _totalArea: totalArea, _plotImages: pl.flatMap(p => (p as any).images || []).slice(0, 4) };
       })
       .filter(
         (p) =>

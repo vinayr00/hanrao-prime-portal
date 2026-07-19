@@ -1,11 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Ruler } from "lucide-react";
+import { MapPin, Phone, Ruler, ImageIcon } from "lucide-react";
 import { SITE, formatPricePerSqYd } from "@/lib/site";
 import type { Project } from "@/lib/types";
+import { useState } from "react";
 
 type Props = {
-  project: Project & { _minPrice?: number; _availableCount?: number; _plotCount?: number };
+  project: Project & {
+    _minPrice?: number;
+    _availableCount?: number;
+    _plotCount?: number;
+    _plotImages?: string[];
+  };
   index?: number;
 };
 
@@ -22,9 +28,7 @@ function AvailabilityPill({ available, total }: { available: number; total: numb
   const label =
     available === 0 ? "Fully Booked" : available === 1 ? "1 plot left" : `${available} plots left`;
   return (
-    <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${colour}`}
-    >
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide ${colour}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${available === 0 ? "bg-muted-foreground" : pct > 0.5 ? "bg-primary" : "bg-[color:var(--terracotta)]"}`} />
       {label}
     </span>
@@ -44,11 +48,73 @@ function ImagePlaceholder({ name }: { name: string }) {
   );
 }
 
+// Plot image strip — shows up to 4 thumbnails with click-to-enlarge lightbox
+function PlotImageStrip({ images }: { images: string[] }) {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  if (!images.length) return null;
+  return (
+    <>
+      <div className="px-5 pb-4 pt-1 border-t border-border/50">
+        <div className="flex items-center gap-1.5 mb-2">
+          <ImageIcon className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Plot Photos
+          </span>
+        </div>
+        <div className="grid grid-cols-4 gap-1.5">
+          {images.slice(0, 4).map((src, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setLightbox(src)}
+              className="relative aspect-square rounded-lg overflow-hidden bg-muted ring-1 ring-border hover:ring-primary/50 transition-all hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <img
+                src={src}
+                alt={`Plot photo ${i + 1}`}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 cursor-zoom-out"
+          onClick={() => setLightbox(null)}
+        >
+          <img
+            src={lightbox}
+            alt="Full size plot photo"
+            className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl"
+          />
+        </div>
+      )}
+    </>
+  );
+}
+
+function cleanSlug(slug?: string, name?: string) {
+  let s = (slug || '').trim();
+  if (!s || s.startsWith('http://') || s.startsWith('https://')) {
+    s = (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  return s;
+}
+
 export function ProjectCard({ project, index = 0 }: Props) {
   const minPrice = project._minPrice ?? 0;
   const available = project._availableCount ?? 0;
   const total = project._plotCount ?? 0;
-  const hasImage = Boolean(project.thumbnail_url);
+  const plotImages = project._plotImages ?? [];
+
+  // Use first plot image as thumbnail fallback if project has no thumbnail
+  const effectiveThumbnail = project.thumbnail_url || plotImages[0] || "";
+  const hasImage = Boolean(effectiveThumbnail);
+  const safeSlug = cleanSlug(project.slug, project.name);
 
   return (
     <motion.article
@@ -61,14 +127,14 @@ export function ProjectCard({ project, index = 0 }: Props) {
       {/* ── Thumbnail ── */}
       <Link
         to="/projects/$slug"
-        params={{ slug: project.slug }}
+        params={{ slug: safeSlug }}
         className="block overflow-hidden"
         aria-label={`View ${project.name} project details`}
       >
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
           {hasImage ? (
             <img
-              src={project.thumbnail_url}
+              src={effectiveThumbnail}
               alt={`${project.name} — ${project.village}, ${project.district}`}
               loading="lazy"
               decoding="async"
@@ -78,7 +144,7 @@ export function ProjectCard({ project, index = 0 }: Props) {
             <ImagePlaceholder name={project.name} />
           )}
 
-          {/* Gradient overlay for readability */}
+          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
           {/* Approval badges */}
@@ -141,7 +207,7 @@ export function ProjectCard({ project, index = 0 }: Props) {
         <div className="mt-auto flex gap-2 pt-2">
           <Link
             to="/projects/$slug"
-            params={{ slug: project.slug }}
+            params={{ slug: safeSlug }}
             className="inline-flex flex-1 items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             View Details
@@ -169,6 +235,9 @@ export function ProjectCard({ project, index = 0 }: Props) {
           </a>
         </div>
       </div>
+
+      {/* ── Plot Photos Strip (only shown if plots have images) ── */}
+      <PlotImageStrip images={plotImages} />
     </motion.article>
   );
 }

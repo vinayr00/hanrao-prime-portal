@@ -20,7 +20,7 @@ type Suggestion = {
 };
 
 const SUGGESTIONS: Suggestion[] = [
-  // Locations
+  // Locations — real HanRao operating areas
   { type: "location", label: "Shamshabad", sublabel: "Rangareddy District", q: "Shamshabad" },
   { type: "location", label: "Kompally", sublabel: "Medchal District", q: "Kompally" },
   { type: "location", label: "Sangareddy", sublabel: "Sangareddy District", q: "Sangareddy" },
@@ -29,11 +29,6 @@ const SUGGESTIONS: Suggestion[] = [
   { type: "location", label: "Patancheru", sublabel: "Sangareddy District", q: "Patancheru" },
   { type: "location", label: "Rangareddy", sublabel: "District", q: "Rangareddy" },
   { type: "location", label: "Medchal", sublabel: "District", q: "Medchal" },
-  // Projects
-  { type: "project", label: "Royal Meadows", sublabel: "Shamshabad · HMDA, RERA", q: "Royal Meadows" },
-  { type: "project", label: "Green Valley", sublabel: "Kompally · DTCP", q: "Green Valley" },
-  { type: "project", label: "Heritage Estates", sublabel: "Sangareddy · RERA", q: "Heritage Estates" },
-  { type: "project", label: "Sunrise Gardens", sublabel: "Shankarpally · HMDA", q: "Sunrise Gardens" },
 ];
 
 const TRENDING = [
